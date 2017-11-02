@@ -1,5 +1,12 @@
 library(fiery)
 library(routr)
+
+set.seed(1492)
+x <- rnorm(15)
+y <- x + rnorm(15)
+fit <- lm(y ~ x)
+saveRDS(fit, "model.rds")
+
 app <- Fire$new(host = '0.0.0.0', port = as.integer(Sys.getenv('PORT')))
 
 # When the app starts, we'll load the model we saved. Instead of
@@ -56,7 +63,7 @@ route$add_handler('get', '/plot', function(request, response, keys, arg_list, ..
   plot(arg_list$model)
   dev.off()
   response$status <- 200L
-  response$file <- f_path
+  response$attach(f_path, filename = 'model_plot.png')
   TRUE
 })
 
