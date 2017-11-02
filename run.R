@@ -8,6 +8,7 @@ fit <- lm(y ~ x)
 saveRDS(fit, "model.rds")
 
 app <- Fire$new(host = '0.0.0.0', port = as.integer(Sys.getenv('PORT')))
+app$set_logger(logger_console())
 
 # When the app starts, we'll load the model we saved. Instead of
 # polluting our namespace we'll use the internal data store
@@ -17,7 +18,7 @@ app$on('start', function(server, ...) {
   message('Model loaded')
 })
 
-# Just for show off, we'll make it so that the model is atomatically
+# Just for show off, we'll make it so that the model is automatically
 # passed on to the request handlers
 
 app$on('before-request', function(server, ...) {
